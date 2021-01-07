@@ -1,0 +1,199 @@
+Sub update_occupancy()
+
+'clear occupancy
+Worksheets("Trainers Occupancy").Activate
+Range("b3:zz500").Clear
+
+'how many lines of classes there are?
+outlook_last_row = ThisWorkbook.Sheets("16 Week Outlook").Cells(Rows.Count, 3).End(xlUp).Row
+
+'variables declaration
+Dim r As Integer
+
+Dim class_start_week As Integer
+Dim class_abay_week As Integer
+Dim class_site As String
+Dim class_program As String
+Dim class_LOB As String
+Dim class_type As String
+Dim class_location As String
+Dim class_status As String
+Dim class_start_date As Date
+Dim class_abay_date As Date
+Dim class_production_date As Date
+Dim requested_HC As String
+Dim class_room As String
+Dim class_shift As String
+Dim class_trainer As String
+
+Dim class_lenght As Range
+Dim last_row As Integer
+
+'Get classes info from the 16 week outlook
+For r = 3 To outlook_last_row
+
+class_start_week = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 1)
+class_abay_week = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 2)
+class_site = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 3)
+class_program = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 4)
+class_LOB = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 5)
+class_type = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 6)
+class_location = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 7)
+class_status = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 8)
+class_start_date = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 9)
+class_abay_date = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 10)
+class_production_date = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 11)
+requested_HC = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 12)
+class_room = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 18)
+class_shift = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 19)
+class_trainer = ThisWorkbook.Sheets("16 Week Outlook").Cells(r, 20)
+
+'go to the occupancy tab
+Worksheets("Trainers Occupancy").Activate
+
+'select class date range
+
+Set start_column = Range("b2:zz2").Find(class_start_date, LookIn:=xlFormulas)
+
+'Handling error for dates not found
+If Not start_column Is Nothing Then
+    
+    start_column = start_column.Address
+
+Else
+    
+    MsgBox "Invalid start date for " & class_program & " " & class_LOB & " class, please check line " & r & " in the 16 week outlook tab and try again"
+    Exit Sub
+
+End If
+
+Set abay_column = Range("b2:zz2").Find(class_abay_date, LookIn:=xlFormulas)
+
+If Not abay_column Is Nothing Then
+
+    abay_column = abay_column.Address
+
+Else
+    
+    MsgBox "Invalid A-Bay date for " & class_program & " " & class_LOB & " class, please check line " & r & " in the 16 week outlook tab and try again"
+    Exit Sub
+
+End If
+
+'find next empty row
+l = 1
+
+Do
+
+Range(start_column & ":" & abay_column).Select
+
+Selection.Offset(l, 0).Select
+
+l = l + 1
+
+Loop Until Selection.Text = ""
+
+'deselect abay week
+weeks_number = Selection.Columns.Count
+
+If weeks_number > 1 Then
+
+Selection.Resize(1, weeks_number - 2).Select
+
+End If
+'paste class info
+Selection.Merge
+
+Selection.Value = "( " & class_site & " " & class_program & " " & class_LOB & " ) - " & class_trainer & "  " & vbNewLine & class_type & " - (" & class_room & ") - " & " (HC = " & requested_HC & ") "
+
+'format cells with class info
+     With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+        .ThemeColor = 1
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+        .ThemeColor = 1
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+        .ThemeColor = 1
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+        .ThemeColor = 1
+    End With
+    
+'border color for OGEs
+    If class_type = "OGE" Then
+        Selection.Borders.Color = RGB(255, 10, 210)
+    End If
+        
+    With Selection
+        .Font.Bold = True
+        .WrapText = True
+        .HorizontalAlignment = xlCenter
+    End With
+    
+'cell color based on the class program
+    If class_program = "SEA" Then
+        Selection.Interior.Color = RGB(135, 206, 235)
+    ElseIf class_program = "SECA" Then
+        Selection.Interior.Color = RGB(154, 205, 50)
+    ElseIf class_program = "SEBC" Then
+        Selection.Interior.Color = RGB(240, 128, 128)
+    End If
+'font format
+    With Selection.Font
+        
+        .Size = 21
+        .Bold = True
+            
+    End With
+'go for next class row
+Next r
+
+'End macro
+End Sub
+
+Sub current_date()
+
+'Get current date
+Dim current_date As Date
+current_date = Date
+
+
+'Find current week
+c = ActiveSheet.Range("b2:zz2").Find(current_date, LookIn:=xlFormulas).Address
+
+'Select current week
+Range(c).Select
+
+
+End Sub
+Sub current_week()
+
+'Get current date
+Dim current_week As Integer
+current_week = WorksheetFunction.WeekNum(Date)
+
+'Find current week
+c = ActiveSheet.Range("b1:ba1").Find(current_week, LookIn:=xlValues).Address
+
+'Select current week
+Range(c).Select
+
+
+End Sub
