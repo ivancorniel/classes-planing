@@ -1,21 +1,14 @@
-my_list = [1,8,6,5,3,7,2]
+def compareSort(unsorted):
+    sort = [unsorted[0],unsorted[1]]
+    for i in range(2, len(unsorted), 1):
+        for k in range(len(sort)):
+            if unsorted[i] < sort[k]:
+                sort.insert(k, unsorted[i])
+                break
+        else:
+            sort.append(unsorted[i])
+    print(unsorted, sort)
 
-new_list = []
+lst = [6,5,8,4,3,25,48,35]
 
-def compareSort(my_list):
-    #new_list.append(my_list[0])
-    for i in range(len(my_list)):
-        new_list_len = len(new_list)
-        if new_list_len < 1:
-            new_list.append(my_list[0])
-        for k in range(len(new_list) - 1):
-            if my_list[i] > new_list[k] and my_list[i] < new_list[k + 1]:
-                new_list.insert(k, my_list[i])
-            else:
-                next
-
-
-
-    print(my_list,new_list)
-
-compareSort(my_list)
+compareSort(lst)
