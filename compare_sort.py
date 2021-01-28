@@ -1,21 +1,22 @@
-my_list = [1,8,6,5,3,7,2]
+#  The function returns a python list of all items sorted in a ascending order.
+#  The function takes a python list, a tuple, with at least 2 items to sort.
+#  For objects with less than 2 items passed as the argument, a "not subscriptable" error is arised.
+#  Repeated items are grouped between the next numbers lower and next number higher than them.
+#  For objects with a text passed as the argument, a lexicographical comparison is performed on the characters of the string
+#  For objects with multiple texts passed as the argument, a lexicographical comparison is performed on the items in the object
+#  For objects with different types items passed as the argument, a "not supported" errot is arised
 
-new_list = []
+def compareSort(unsortEd):
+    sortEd = [unsortEd[0],unsortEd[1]]
 
-def compareSort(my_list):
-    #new_list.append(my_list[0])
-    for i in range(len(my_list)):
-        new_list_len = len(new_list)
-        if new_list_len < 1:
-            new_list.append(my_list[0])
-        for k in range(len(new_list) - 1):
-            if my_list[i] > new_list[k] and my_list[i] < new_list[k + 1]:
-                new_list.insert(k, my_list[i])
-            else:
-                next
-
-
-
-    print(my_list,new_list)
-
-compareSort(my_list)
+    if sortEd[1] < sortEd[0]: #  Sort first 2 initialized items
+        sortEd.insert(0,sortEd[1])
+        sortEd.pop(2)
+    for i in range(2, len(unsortEd), 1): #  Loop through unsorted list
+        for k in range(len(sortEd)): #  Loop through new created sorted list
+            if unsortEd[i] < sortEd[k]:
+                sortEd.insert(k, unsortEd[i]) #  Insert unsorted item in the sorted list
+                break
+        else:
+            sortEd.append(unsortEd[i]) #  Add unsorted item to the end of the sorted list if a greater item not found
+    return sortEd
