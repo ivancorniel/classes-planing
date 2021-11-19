@@ -1,8 +1,6 @@
-Sub update_occupancy()
-
 'clear occupancy
 Worksheets("Trainers Occupancy").Activate
-Range("b3:zz500").Clear
+Range("b3:aay500").Clear
 
 'how many lines of classes there are?
 outlook_last_row = ThisWorkbook.Sheets("16 Week Outlook").Cells(Rows.Count, 3).End(xlUp).Row
@@ -53,7 +51,7 @@ Worksheets("Trainers Occupancy").Activate
 
 'select class date range
 
-Set start_column = Range("b2:zz2").Find(class_start_date, LookIn:=xlFormulas)
+Set start_column = Range("b2:aay2").Find(class_start_date, LookIn:=xlFormulas)
 
 'Handling error for dates not found
 If Not start_column Is Nothing Then
@@ -67,7 +65,7 @@ Else
 
 End If
 
-Set abay_column = Range("b2:zz2").Find(class_abay_date, LookIn:=xlFormulas)
+Set abay_column = Range("b2:aay2").Find(class_production_date, LookIn:=xlFormulas)
 
 If Not abay_column Is Nothing Then
 
@@ -98,7 +96,7 @@ weeks_number = Selection.Columns.Count
 
 If weeks_number > 1 Then
 
-Selection.Resize(1, weeks_number - 2).Select
+Selection.Resize(1, weeks_number).Select
 
 End If
 'paste class info
@@ -139,6 +137,10 @@ Selection.Value = "( " & class_site & " " & class_program & " " & class_LOB & " 
 'border color for OGEs
     If class_type = "OGE" Then
         Selection.Borders.Color = RGB(255, 10, 210)
+        With Selection.Interior
+        .Color = RGB(200, 150, 0)
+        .TintAndShade = 0
+    End With
     End If
         
     With Selection
@@ -148,12 +150,73 @@ Selection.Value = "( " & class_site & " " & class_program & " " & class_LOB & " 
     End With
     
 'cell color based on the class program
-    If class_program = "SEA" Then
-        Selection.Interior.Color = RGB(135, 206, 235)
-    ElseIf class_program = "SECA" Then
-        Selection.Interior.Color = RGB(154, 205, 50)
-    ElseIf class_program = "SEBC" Then
-        Selection.Interior.Color = RGB(240, 128, 128)
+    If class_program = "SEA" And class_type = "NHO" Then
+    With Selection.Interior
+        .Pattern = xlPatternLinearGradient
+        .Gradient.Degree = 0
+        .Gradient.ColorStops.Clear
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0)
+        .ThemeColor = xlThemeColorAccent5
+        .TintAndShade = 0
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0.6)
+        .ThemeColor = xlThemeColorAccent5
+        .TintAndShade = 0
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0.61)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(1)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
+    
+    ElseIf class_program = "SECA" And class_type = "NHO" Then
+      With Selection.Interior
+        .Pattern = xlPatternLinearGradient
+        .Gradient.Degree = 0
+        .Gradient.ColorStops.Clear
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0)
+        .Color = 5296274
+        .TintAndShade = 0
+    End With
+        With Selection.Interior.Gradient.ColorStops.Add(0.6)
+        .Color = 5296274
+        .TintAndShade = 0
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0.61)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
+        With Selection.Interior.Gradient.ColorStops.Add(1)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
+    ElseIf class_program = "SEBC" And class_type = "NHO" Then
+    With Selection.Interior
+        .Pattern = xlPatternLinearGradient
+        .Gradient.Degree = 0
+        .Gradient.ColorStops.Clear
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0)
+        .Color = 7109104
+        .TintAndShade = 0
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0.7)
+        .Color = 7109104
+        .TintAndShade = 0
+    End With
+    With Selection.Interior.Gradient.ColorStops.Add(0.71)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
+        With Selection.Interior.Gradient.ColorStops.Add(1)
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.249977111117893
+    End With
     End If
 'font format
     With Selection.Font
@@ -166,34 +229,4 @@ Selection.Value = "( " & class_site & " " & class_program & " " & class_LOB & " 
 Next r
 
 'End macro
-End Sub
-
-Sub current_date()
-
-'Get current date
-Dim current_date As Date
-current_date = Date
-
-
-'Find current week
-c = ActiveSheet.Range("b2:zz2").Find(current_date, LookIn:=xlFormulas).Address
-
-'Select current week
-Range(c).Select
-
-
-End Sub
-Sub current_week()
-
-'Get current date
-Dim current_week As Integer
-current_week = WorksheetFunction.WeekNum(Date)
-
-'Find current week
-c = ActiveSheet.Range("b1:ba1").Find(current_week, LookIn:=xlValues).Address
-
-'Select current week
-Range(c).Select
-
-
 End Sub
