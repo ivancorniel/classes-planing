@@ -1,6 +1,10 @@
+
+
+Sub update_occupancy()
+
 'clear occupancy
 Worksheets("Trainers Occupancy").Activate
-Range("b3:aay500").Clear
+Range("b3:xaa500").Clear
 
 'how many lines of classes there are?
 outlook_last_row = ThisWorkbook.Sheets("16 Week Outlook").Cells(Rows.Count, 3).End(xlUp).Row
@@ -51,7 +55,7 @@ Worksheets("Trainers Occupancy").Activate
 
 'select class date range
 
-Set start_column = Range("b2:aay2").Find(class_start_date, LookIn:=xlFormulas)
+Set start_column = Range("b2:xaa2").Find(class_start_date, LookIn:=xlFormulas)
 
 'Handling error for dates not found
 If Not start_column Is Nothing Then
@@ -65,7 +69,7 @@ Else
 
 End If
 
-Set abay_column = Range("b2:aay2").Find(class_production_date, LookIn:=xlFormulas)
+Set abay_column = Range("b2:xaa2").Find(class_production_date, LookIn:=xlFormulas)
 
 If Not abay_column Is Nothing Then
 
